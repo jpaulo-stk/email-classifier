@@ -1,5 +1,3 @@
-import pdfplumber
-import io
 from app.enums.common import Category
 
 PRODUCTIVE = Category.productive
@@ -22,16 +20,3 @@ def suggest_reply(category: Category, text: str) -> str:
     if any(k in t for k in ["parabéns", "feliz", "agrade", "obrigado", "obrigada"]):
         return ("Muito obrigado pela mensagem! Ficamos à disposição. Ótimo dia!")
     return ("Agradecemos sua mensagem. Caso necessite de suporte, estamos à disposição!")
-
-
-def _safe_decode_txt(raw: bytes) -> str:
-    for enc in ("utf-8", "utf-8-sig", "latin-1"):
-        try:
-            return raw.decode(enc)
-        except Exception:
-            continue
-    return raw.decode("utf-8", errors="ignore")
-
-def _extract_text_from_pdf(raw: bytes) -> str:
-    with pdfplumber.open(io.BytesIO(raw)) as pdf:
-        return "\n".join([(p.extract_text() or "") for p in pdf.pages]).strip()
