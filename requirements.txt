@@ -6,7 +6,12 @@ numpy
 nltk
 spacy
 pdfplumber
+<<<<<<< Updated upstream
 python-dotenv
 pydantic
 huggingface_hub
 httpx
+=======
+httpx
+nltk
+>>>>>>> Stashed changes
