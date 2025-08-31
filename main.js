@@ -26,12 +26,27 @@ const batchContainer = $("#batchContainer");
 
 let currentFiles = [];
 
+async function fetchJSON(url, options) {
+  const resp = await fetch(url, options);
+  const raw = await resp.text();
+  let data = {};
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch {
+    console.warn("Resposta não-JSON:", raw);
+  }
+  if (!resp.ok) {
+    throw new Error(data?.detail || raw || `HTTP ${resp.status}`);
+  }
+  return data;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const j = await fetchJSON(`${API}/health`);
-    envLabel.textContent = j.app_env || j.env || "local";
+    envLabel && (envLabel.textContent = j.app_env || j.env || "local");
   } catch (_) {
-    envLabel.textContent = "offline";
+    envLabel && (envLabel.textContent = "offline");
   }
 });
 
@@ -76,30 +91,17 @@ fileInput.addEventListener("change", () => {
   }
 });
 
-async function fetchJSON(url, options) {
-  const resp = await fetch(url, options);
-  const raw = await resp.text();
-  let data = {};
-  try {
-    data = raw ? JSON.parse(raw) : {};
-  } catch {
-    console.warn("Resposta não-JSON:", raw);
-  }
-  if (!resp.ok) {
-    throw new Error(data?.detail || raw || `HTTP ${resp.status}`);
-  }
-  return data;
-}
-
 function setSingleResult({ category, confidence: conf, suggestedReply }, raw) {
   resultCard.classList.remove("hidden");
   batchSection.classList.add("hidden");
 
   categoryBadge.textContent = category || "—";
   categoryBadge.classList.remove("ok", "warn");
-  if ((category || "").toLowerCase().startsWith("produt"))
+  if ((category || "").toLowerCase().startsWith("produt")) {
     categoryBadge.classList.add("ok");
-  else categoryBadge.classList.add("warn");
+  } else {
+    categoryBadge.classList.add("warn");
+  }
 
   if (typeof conf === "number") {
     const pct = Math.max(0, Math.min(100, conf * 100));
@@ -109,6 +111,7 @@ function setSingleResult({ category, confidence: conf, suggestedReply }, raw) {
     confidence.textContent = "—";
     confBar.style.width = "0%";
   }
+
   replyBox.textContent = suggestedReply || "—";
   debugJson.textContent = JSON.stringify(raw, null, 2);
 }
@@ -174,10 +177,6 @@ btn.addEventListener("click", async () => {
         method: "POST",
         body: fd,
       });
-      if (!resp.ok) {
-        showToast(raw?.detail || "Falha ao processar arquivos.", true);
-        return;
-      }
       setBatchResults(raw);
       showToast("Arquivos processados ✔");
       return;
@@ -188,16 +187,11 @@ btn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),
     });
-
-    if (!resp.ok) {
-      showToast(raw?.detail || "Falha ao processar texto.", true);
-      return;
-    }
     setSingleResult(raw, raw);
     showToast("Texto processado ✔");
   } catch (err) {
     console.error(err);
-    showToast("Erro de rede ou CORS.", true);
+    showToast(err.message || "Erro de rede ou CORS.", true);
   } finally {
     setLoading(false);
   }
