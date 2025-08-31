@@ -28,8 +28,7 @@ let currentFiles = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const r = await fetch(`${API}/health`);
-    const j = await r.json();
+    const j = await fetchJSON(`${API}/health`);
     envLabel.textContent = j.app_env || j.env || "local";
   } catch (_) {
     envLabel.textContent = "offline";
@@ -76,6 +75,21 @@ fileInput.addEventListener("change", () => {
     fileInput.value = "";
   }
 });
+
+async function fetchJSON(url, options) {
+  const resp = await fetch(url, options);
+  const raw = await resp.text();
+  let data = {};
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch {
+    console.warn("Resposta não-JSON:", raw);
+  }
+  if (!resp.ok) {
+    throw new Error(data?.detail || raw || `HTTP ${resp.status}`);
+  }
+  return data;
+}
 
 function setSingleResult({ category, confidence: conf, suggestedReply }, raw) {
   resultCard.classList.remove("hidden");
@@ -156,11 +170,10 @@ btn.addEventListener("click", async () => {
     if (currentFiles.length) {
       const fd = new FormData();
       currentFiles.forEach((f) => fd.append("files", f, f.name));
-      const resp = await fetch(`${API}/classify/uploads`, {
+      const raw = await fetchJSON(`${API}/classify/uploads`, {
         method: "POST",
         body: fd,
       });
-      const raw = await resp.json();
       if (!resp.ok) {
         showToast(raw?.detail || "Falha ao processar arquivos.", true);
         return;
@@ -170,12 +183,12 @@ btn.addEventListener("click", async () => {
       return;
     }
 
-    const resp = await fetch(`${API}/classify`, {
+    const raw = await fetchJSON(`${API}/classify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),
     });
-    const raw = await resp.json();
+
     if (!resp.ok) {
       showToast(raw?.detail || "Falha ao processar texto.", true);
       return;
