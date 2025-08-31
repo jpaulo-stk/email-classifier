@@ -20,11 +20,53 @@ const envLabel = $("#envLabel");
 const fileInput = $("#fileInput");
 const fileList = $("#fileList");
 const btnCopy = $("#btnCopy");
+const textInput = $("#textInput");
 
 const batchSection = $("#batchResults");
 const batchContainer = $("#batchContainer");
 
 let currentFiles = [];
+
+function renderFileList() {
+  fileList.innerHTML = "";
+  currentFiles.forEach((file, idx) => {
+    const li = document.createElement("li");
+    li.className = "file-chip";
+    li.innerHTML = `
+      <span>${file.name}</span>
+      <button title="Remover" data-idx="${idx}">✕</button>
+    `;
+    fileList.appendChild(li);
+  });
+}
+
+fileList.addEventListener("click", (e) => {
+  if (e.target.tagName.toLowerCase() === "button") {
+    const idx = Number(e.target.getAttribute("data-idx"));
+    currentFiles = currentFiles.filter((_, i) => i !== idx);
+    renderFileList();
+  }
+});
+
+fileInput.addEventListener("change", () => {
+  if (fileInput.files?.length) {
+    if (textInput.value.trim()) {
+      textInput.value = "";
+      showToast("Texto limpo: usando arquivos para processamento.");
+    }
+    currentFiles.push(...Array.from(fileInput.files));
+    renderFileList();
+    fileInput.value = "";
+  }
+});
+
+textInput.addEventListener("input", () => {
+  if (textInput.value.trim() && currentFiles.length) {
+    currentFiles = [];
+    renderFileList();
+    showToast("Arquivos removidos: usando o texto para processamento.");
+  }
+});
 
 async function fetchJSON(url, options) {
   const resp = await fetch(url, options);
