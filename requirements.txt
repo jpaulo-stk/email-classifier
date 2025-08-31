@@ -9,3 +9,4 @@ scikit-learn
 pdfplumber
 httpx
 nltk
+python-multipart
