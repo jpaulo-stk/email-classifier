@@ -1,4 +1,8 @@
-const BASE_URL = "";
+const isProd =
+  typeof window !== "undefined" &&
+  window.location.hostname.endsWith(".vercel.app");
+
+const API = isProd ? "/api" : "http://127.0.0.1:8000";
 
 const $ = (sel) => document.querySelector(sel);
 const btn = $("#btnProcess");
@@ -22,7 +26,7 @@ let currentFiles = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const r = await fetch(`${BASE_URL}/health`);
+    const r = await fetch(`${API}/health`);
     const j = await r.json();
     envLabel.textContent = j.app_env || j.env || "local";
   } catch (_) {
@@ -150,7 +154,7 @@ btn.addEventListener("click", async () => {
     if (currentFiles.length) {
       const fd = new FormData();
       currentFiles.forEach((f) => fd.append("files", f, f.name));
-      const resp = await fetch(`${BASE_URL}/classify/uploads`, {
+      const resp = await fetch(`${API}/classify/uploads`, {
         method: "POST",
         body: fd,
       });
@@ -164,7 +168,7 @@ btn.addEventListener("click", async () => {
       return;
     }
 
-    const resp = await fetch(`${BASE_URL}/classify`, {
+    const resp = await fetch(`${API}/classify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),
