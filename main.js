@@ -2,7 +2,9 @@ const isProd =
   typeof window !== "undefined" &&
   window.location.hostname.endsWith(".vercel.app");
 
-const API = isProd ? "/api" : "http://127.0.0.1:8000";
+const API = isProd
+  ? "https://email-classifier-ysyc.onrender.com"
+  : "http://127.0.0.1:8000";
 
 const $ = (sel) => document.querySelector(sel);
 const btn = $("#btnProcess");

@@ -1,1 +1,3 @@
-from app.main import app
+from app.main import app as vercel_app
+
+app = vercel_app
