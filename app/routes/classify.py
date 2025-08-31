@@ -6,7 +6,9 @@ import app.services.hf_service as hf_service
 from app.config import settings
 from app.schemas.classify import ClassifyIn, ClassifyOut, BatchIn
 from app.schemas.file_out import FileClassifyOut
-from app.helpers.suggest_reply import suggest_reply, _safe_decode_txt, _extract_text_from_pdf
+from app.helpers.suggest_reply import suggest_reply
+import pdfplumber
+import io
 
 router = APIRouter()
 
@@ -14,6 +16,18 @@ MODEL_PATH: Path = settings.MODEL_PATH
 if not MODEL_PATH.exists():
     raise RuntimeError(f"Modelo não encontrado em {MODEL_PATH}. Rode: python scripts/train.py")
 model = load(MODEL_PATH)
+
+def _safe_decode_txt(raw: bytes) -> str:
+    for enc in ("utf-8", "utf-8-sig", "latin-1"):
+        try:
+            return raw.decode(enc)
+        except Exception:
+            continue
+    return raw.decode("utf-8", errors="ignore")
+
+def _extract_text_from_pdf(raw: bytes) -> str:
+    with pdfplumber.open(io.BytesIO(raw)) as pdf:
+        return "\n".join([(p.extract_text() or "") for p in pdf.pages]).strip()
 
 @router.post("/classify", response_model=ClassifyOut)
 def classify_email(payload: ClassifyIn):

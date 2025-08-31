@@ -1,17 +1,11 @@
 fastapi
-uvicorn[standard]
-scikit-learn
-pandas
-numpy
-nltk
-spacy
-pdfplumber
-<<<<<<< Updated upstream
-python-dotenv
+uvicorn
+gunicorn
 pydantic
-huggingface_hub
-httpx
-=======
+pydantic-settings
+python-dotenv
+joblib
+scikit-learn
+pdfplumber
 httpx
 nltk
->>>>>>> Stashed changes
