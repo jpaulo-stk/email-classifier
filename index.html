@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Email Classifier • Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar"><h1>Email Classifier</h1></header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Classificar e sugerir resposta</h2>
+        <p class="muted">
+          Envie <code>.txt</code> ou <code>.pdf</code> <strong>ou</strong> cole
+          o texto do email.
+        </p>
+
+        <div class="form-row">
+          <label for="fileInput">Arquivos (.txt / .pdf)</label>
+          <input
+            type="file"
+            id="fileInput"
+            accept=".txt,application/pdf"
+            multiple
+          />
+          <ul id="fileList" class="file-list"></ul>
+        </div>
+
+        <div class="divider"><span>ou</span></div>
+
+        <div class="form-row">
+          <label for="textInput">Texto do email</label>
+          <textarea
+            id="textInput"
+            rows="6"
+            class="no-resize"
+            placeholder="Cole aqui o conteúdo do email..."
+          ></textarea>
+        </div>
+
+        <div class="actions">
+          <button id="btnProcess">Processar</button>
+          <span id="loading" class="loading hidden">Processando…</span>
+        </div>
+
+        <div id="toast" class="toast hidden"></div>
+      </section>
+
+      <section id="resultCard" class="card hidden">
+        <h2>Resultado</h2>
+        <div class="result-grid">
+          <div>
+            <div class="label">Categoria</div>
+            <div id="categoryBadge" class="badge">—</div>
+          </div>
+          <div>
+            <div class="label">Confiança</div>
+            <div id="confidence" class="value">—</div>
+            <div class="bar">
+              <div id="confBar" class="bar-fill" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Resposta sugerida</label>
+          <div id="replyBox" class="reply-box">—</div>
+          <button id="btnCopy" class="ghost">Copiar resposta</button>
+        </div>
+
+        <details class="debug">
+          <summary>Debug</summary>
+          <pre id="debugJson">{}</pre>
+        </details>
+      </section>
+
+      <section id="batchResults" class="card hidden">
+        <h2>Resultados dos arquivos</h2>
+        <div id="batchContainer" class="batch-grid"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>João Paulo Bazan Forastiere &copy; - 2025.</small>
+    </footer>
+    <script src="main.js"></script>
+  </body>
+</html>

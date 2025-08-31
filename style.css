@@ -1,0 +1,257 @@
+:root {
+  --bg: #0f172a;
+  --card: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #6366f1;
+  --ok: #10b981;
+  --warn: #f59e0b;
+  --bad: #ef4444;
+  --border: #1f2937;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+.topbar {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.topbar h1 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.muted {
+  color: var(--muted);
+  margin: 4px 0 12px;
+}
+
+.form-row {
+  margin: 12px 0;
+  display: grid;
+  gap: 8px;
+}
+.no-resize {
+  resize: none;
+}
+label {
+  font-size: 13px;
+  color: var(--muted);
+}
+input[type="file"],
+textarea {
+  width: 100%;
+  background: #0a1020;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+textarea::placeholder {
+  color: #596174;
+}
+
+/* ações */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+button {
+  padding: 10px 16px;
+  background: var(--accent);
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading {
+  font-size: 13px;
+  color: var(--muted);
+}
+.hidden {
+  display: none !important;
+}
+
+/* separador */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  background: var(--border);
+  flex: 1;
+}
+
+/* resultado único */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 8px 0;
+}
+.label {
+  color: var(--muted);
+  font-size: 12px;
+}
+.value {
+  font-size: 16px;
+}
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #0a1020;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.badge.ok {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.badge.warn {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.reply-box {
+  background: #0a1020;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  line-height: 1.4;
+}
+
+/* barra de confiança */
+.bar {
+  width: 100%;
+  height: 8px;
+  background: #0a1020;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--ok);
+  width: 0%;
+  transition: width 0.25s ease;
+}
+
+/* toasts */
+.toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #111827;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.toast.error {
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* lista de arquivos */
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0a1020;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.file-chip button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* lote (múltiplos arquivos) */
+.batch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.batch-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  background: #0a1020;
+}
+.batch-item .name {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.batch-item .err {
+  color: var(--bad);
+}
+.footer {
+  padding: 14px;
+  text-align: center;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
