@@ -8,3 +8,4 @@ joblib
 scikit-learn
 pdfplumber
 httpx
+nltk

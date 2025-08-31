@@ -1,23 +1,26 @@
-# app/nlp/preprocess.py
 import re
-from typing import List
+import unicodedata
+
+import nltk
 from nltk.corpus import stopwords
-from nltk.stem.snowball import SnowballStemmer
 
-_PT_STOPWORDS = set(stopwords.words("portuguese"))
-_STEMMER = SnowballStemmer("portuguese")
+def _ensure_stopwords_pt():
+    try:
+        _ = stopwords.words("portuguese")
+    except LookupError:
+        nltk.download("stopwords")
+    return set(stopwords.words("portuguese"))
 
-_TOKEN_RE = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿ0-9]+")
+STOP_PT = _ensure_stopwords_pt()
 
-def tokenize_pt(text: str) -> List[str]:
-    if not text:
-        return []
-    text = text.lower()
-    tokens = _TOKEN_RE.findall(text)
-    filtered = []
-    for tok in tokens:
-        if tok in _PT_STOPWORDS:
-            continue
-        stem = _STEMMER.stem(tok)
-        filtered.append(stem)
-    return filtered
+_WORD_RE = re.compile(r"\b[\w\-]+\b", flags=re.UNICODE)
+
+def normalize(text: str) -> str:
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    return text.lower()
+
+def tokenize_pt(text: str) -> list[str]:
+    text = normalize(text)
+    tokens = _WORD_RE.findall(text)
+    return [t for t in tokens if t not in STOP_PT and len(t) > 1]
