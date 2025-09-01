@@ -171,10 +171,5 @@ Resposta:
 
 ## 🎬 Vídeo
 
-- video mostrando UI, uploads, classificação e explicação técnica.
-- https://drive.google.com/file/d/1Err-NX-6QjqcTqOW2hyZi48rPo5Yi-Uo/view?usp=sharing
-
----
-
-## 🧾 Licença
-MIT — use livremente com créditos.
+- Video mostrando UI, uploads, classificação e explicação técnica.
+- **Video:** https://drive.google.com/file/d/1Err-NX-6QjqcTqOW2hyZi48rPo5Yi-Uo/view?usp=sharing
