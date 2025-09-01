@@ -169,9 +169,10 @@ Resposta:
 
 ---
 
-## 🎬 Vídeo (a ser gravado)
+## 🎬 Vídeo
 
-- 3–5 min mostrando UI, uploads, classificação e explicação técnica.
+- video mostrando UI, uploads, classificação e explicação técnica.
+- https://drive.google.com/file/d/1Err-NX-6QjqcTqOW2hyZi48rPo5Yi-Uo/view?usp=sharing
 
 ---
 
